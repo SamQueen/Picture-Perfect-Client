@@ -7,14 +7,15 @@ import FormData from 'form-data';
 import { Slider } from './ui/slider';
 import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
-const PostModal = ({ closeModal, userId }: PostModal) => {
+const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
     const router = useRouter();
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
     const [file, setFile] = useState<string | Blob>('');
     const [fileSet, setFileSet] = useState(false);
     const [showNext, setShowNext] = useState(false);
-    const [caption, setCaption] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -26,20 +27,22 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
     }
 
     const handleSubmit = async() => {
+        setIsLoading(true);
         const formData:any = new FormData();
         formData.append('image', file);
 
-        await instance.post('createPost', formData, {
+        await instance.post('updateProfilePhoto', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 user_id: userId,
-                caption: caption,
             },
         }).then((res) => {
+            setIsLoading(false);
             closeModal(true);
             router.push('/');
         }).catch((err) => {
-            console.log('Error creating post: ' + err)
+            console.log('Error creating post: ' + err);
+            setIsLoading(false);
         });
     }
 
@@ -82,7 +85,7 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
                         onClick={handleSubmit} 
                         className='absolute right-5 text-blue-400 hover:text-blue-600 duration-500 cursor-pointer'
                     >
-                        post
+                        change
                     </h1>
                 )}
             </div>
@@ -104,25 +107,15 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
             )}
 
             <div className={`bg-white h-[calc(100%-26px)] w-full absolute top-[26px] p-5 duration-1000 ${showNext ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
-                    <img className="h-full" src={fileUrl} />
-                </div>
-
-                <div className='w-full h-[calc(50%-26px)] pt-5'>
-                    <Label>Brightness</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} />
-
-                    <Label>Contrast</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} /> 
-
-                    <Label>Sharpness</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} /> 
-                    
-                    <div className='w-full mt-5'>
-                        <Label>Add a caption!</Label>
-                        <Textarea onChange={(e) => {setCaption(e.target.value)}} />
+                {isLoading ? (
+                    <div className='h-full w-full flex justify-center items-center'>
+                        <Loader2 className="animate-spin" />
                     </div>
-                </div>
+                ): (
+                    <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
+                        <img className="h-full" src={fileUrl} />
+                    </div>
+                )} 
             </div>
 
             
@@ -131,4 +124,4 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
   )
 }
 
-export default PostModal
+export default ChangeProfilePhotoModal

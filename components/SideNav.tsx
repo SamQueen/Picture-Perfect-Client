@@ -13,6 +13,7 @@ const SideNav = ({ user }: SideNavTpye) => {
 
     const handleHomeClick = () => {
         router.push('/');
+        router.refresh();
     }
 
     const handleLogout = () => {

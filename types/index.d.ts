@@ -64,3 +64,8 @@ declare type ImageGalleryProps = {
 declare type AddFeedBtnProps = {
     userId: number,
 }
+
+declare type ChangeProfileBtnProps = {
+    profilePhoto: string,
+    user: User,
+}

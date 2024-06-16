@@ -2,23 +2,23 @@
 import React, { useState } from 'react'
 import { FaCirclePlus } from "react-icons/fa6";
 import PostModal from './PostModal';
-import { useRouter } from 'next/navigation';
 
 const AddFeedBtn = ({userId} : AddFeedBtnProps) => {
-    const router = useRouter();
     const [postModal, setPostModal] = useState(false);
 
     const openModal = () => {
         setPostModal(true);
-        document.body.style.overflow = 'hidden'
+        document.body.style.overflow = 'hidden';
     }
     
     const closeModal = (reload:boolean) => {
         setPostModal(false);
         document.body.style.overflow = 'auto';
 
-        if (reload)
-          router.refresh();
+        // reload current page
+        if (reload) {
+          location.reload();
+        }
     }
 
   return (

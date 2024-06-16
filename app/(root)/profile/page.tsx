@@ -1,11 +1,9 @@
 import ImageGallery from '@/components/ImageGallery';
-import { Button } from '@/components/ui/button';
 import CustomButton from '@/components/ui/customButton';
-import instance from '@/lib/axiosConfig';
 import { redirect } from "next/navigation";
-import { cookies } from 'next/headers';
 import React from 'react';
 import { getLoggedInUser, getUserById } from '@/lib/action/user.action';
+import ChangeProfilePhotoBtn from '@/components/ChangeProfilePhotoBtn';
 
 export default async function Profile({ searchParams }: any) {
   const loggedInUser:User | undefined = await getLoggedInUser();
@@ -31,7 +29,7 @@ export default async function Profile({ searchParams }: any) {
 
       <div className='py-20 w-full  md:w-3/4 xl:w-1/2'>
         <div className='mb-20 flex items-center'>
-          <img className='rounded-full h-24 md:h-32 lg:h-48 mr-5' src={profilePageUser!.profile_picture} alt=''/>
+          <ChangeProfilePhotoBtn user={loggedInUser} profilePhoto={profilePageUser!.profile_picture}/>
 
           <div>
             <div className='flex'>
