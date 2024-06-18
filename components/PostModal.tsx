@@ -4,9 +4,9 @@ import { FaX } from "react-icons/fa6";
 import { Textarea } from './ui/textarea';
 import instance from '@/lib/axiosConfig';
 import FormData from 'form-data';
-import { Slider } from './ui/slider';
 import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 const PostModal = ({ closeModal, userId }: PostModal) => {
     const router = useRouter();
@@ -15,6 +15,7 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
     const [fileSet, setFileSet] = useState(false);
     const [showNext, setShowNext] = useState(false);
     const [caption, setCaption] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -26,6 +27,8 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
     }
 
     const handleSubmit = async() => {
+        setIsLoading(true);
+        
         const formData:any = new FormData();
         formData.append('image', file);
 
@@ -37,8 +40,10 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
             },
         }).then((res) => {
             closeModal(true);
+            setIsLoading(false);
             router.push('/');
         }).catch((err) => {
+            setIsLoading(false);
             console.log('Error creating post: ' + err)
         });
     }
@@ -104,27 +109,26 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
             )}
 
             <div className={`bg-white h-[calc(100%-26px)] w-full absolute top-[26px] p-5 duration-1000 ${showNext ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
-                    <img className="h-full" src={fileUrl} />
-                </div>
-
-                <div className='w-full h-[calc(50%-26px)] pt-5'>
-                    <Label>Brightness</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} />
-
-                    <Label>Contrast</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} /> 
-
-                    <Label>Sharpness</Label>
-                    <Slider className="mb-3 mt-1" defaultValue={[0]} max={50} min={-50} /> 
-                    
-                    <div className='w-full mt-5'>
-                        <Label>Add a caption!</Label>
-                        <Textarea onChange={(e) => {setCaption(e.target.value)}} />
+                {isLoading ? (
+                    <div className='h-full w-full flex justify-center items-center'>
+                        <Loader2 className="animate-spin" />
                     </div>
-                </div>
-            </div>
+                ) : (
+                    <div className='h-full'>
+                        <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
+                            <img className="h-full" src={fileUrl} />
+                        </div>
 
+                        <div className='w-full h-[calc(50%-26px)] pt-5'>
+                            <div className='w-full mt-5'>
+                                <Label>Add a caption!</Label>
+                                <Textarea onChange={(e) => {setCaption(e.target.value)}} />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+            </div>
             
         </div>
     </div>
