@@ -4,10 +4,11 @@ import { FaX } from "react-icons/fa6";
 import { Textarea } from './ui/textarea';
 import instance from '@/lib/axiosConfig';
 import FormData from 'form-data';
-import { Slider } from './ui/slider';
-import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import ImageCrop from './ImageCrop';
+import { Area } from 'react-easy-crop';
+import { getCroppedImage } from '@/lib/cropImage';
 
 const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
     const router = useRouter();
@@ -16,6 +17,7 @@ const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
     const [fileSet, setFileSet] = useState(false);
     const [showNext, setShowNext] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -28,8 +30,15 @@ const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
 
     const handleSubmit = async() => {
         setIsLoading(true);
+
+        // get the cropped image
+        if (!croppedAreaPixels) {
+            setIsLoading(false);
+            return;
+        }
+        const croppedImage = await getCroppedImage(fileUrl, croppedAreaPixels);
         const formData:any = new FormData();
-        formData.append('image', file);
+        formData.append('image', croppedImage);
 
         await instance.post('updateProfilePhoto', formData, {
             headers: {
@@ -112,8 +121,12 @@ const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
                         <Loader2 className="animate-spin" />
                     </div>
                 ): (
-                    <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
-                        <img className="h-full" src={fileUrl} />
+                    <div className='h-full w-full'>
+                        <ImageCrop 
+                            image={fileUrl}
+                            croppedAreaPixels={croppedAreaPixels}
+                            setCroppedAreaPixels={setCroppedAreaPixels}
+                        />
                     </div>
                 )} 
             </div>
