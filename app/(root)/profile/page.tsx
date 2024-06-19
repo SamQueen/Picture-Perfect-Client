@@ -30,7 +30,7 @@ export default async function Profile({ searchParams }: any) {
       <div className='py-20 w-full  md:w-3/4 xl:w-1/2'>
         <div className='mb-20 flex items-center'>
           <ChangeProfilePhotoBtn user={loggedInUser} profilePhoto={profilePageUser!.profile_picture}/>
-
+          
           <div>
             <div className='flex'>
               <h1 className='text-2xl text-blue-400 mr-1'>@</h1>

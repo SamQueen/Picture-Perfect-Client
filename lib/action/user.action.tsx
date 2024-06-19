@@ -44,5 +44,19 @@ export const getUserById = async(userId:number):Promise<User | undefined> => {
         console.error('Error gettting user by ID: ' + err);
         return undefined;
     }
-
 };
+
+export const getUserFeed = async(userId:number):Promise<FeedItem[]> => {
+    try {
+        const response = await instance.get('/feed', {
+            params: {
+                id: userId
+            }
+        });
+
+        return response.data;
+    } catch (err) {
+        console.log('Error getting users feed: ' + err);
+        return [];
+    }
+}

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FaCirclePlus } from "react-icons/fa6";
 import PostModal from './PostModal';
 
-const AddFeedBtn = ({userId} : AddFeedBtnProps) => {
+const AddFeedBtn = ({ user } : AddFeedBtnProps) => {
     const [postModal, setPostModal] = useState(false);
 
     const openModal = () => {
@@ -23,8 +23,8 @@ const AddFeedBtn = ({userId} : AddFeedBtnProps) => {
 
   return (
     <div>
-        {postModal && <PostModal userId={userId} closeModal={closeModal} />}
-
+        {postModal && <PostModal user={user} closeModal={closeModal} />}
+        
         <FaCirclePlus onClick={openModal} className='mx-auto mb-5 text-4xl text-red-300 cursor-pointer plus-animate' />
     </div>
   )

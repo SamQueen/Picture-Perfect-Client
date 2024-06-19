@@ -10,7 +10,7 @@ import ImageCrop from './ImageCrop';
 import { Area } from 'react-easy-crop';
 import { getCroppedImage } from '@/lib/cropImage';
 
-const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
+const ChangeProfilePhotoModal = ({ closeModal, user }: PostModal) => {
     const router = useRouter();
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
     const [file, setFile] = useState<string | Blob>('');
@@ -43,7 +43,8 @@ const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
         await instance.post('updateProfilePhoto', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                user_id: userId,
+                user_id: user.id,
+                current_profile_picture: user.profile_picture,
             },
         }).then((res) => {
             setIsLoading(false);
@@ -126,6 +127,7 @@ const ChangeProfilePhotoModal = ({ closeModal, userId }: PostModal) => {
                             image={fileUrl}
                             croppedAreaPixels={croppedAreaPixels}
                             setCroppedAreaPixels={setCroppedAreaPixels}
+                            aspectRatio={1}
                         />
                     </div>
                 )} 

@@ -1,25 +1,15 @@
-import React from 'react'
-import FeedItem from './FeedItem'
-import axios from '../lib/axiosConfig';
+import React from 'react';
+import FeedItem from './FeedItem';
 import AddFeedBtn from './AddFeedBtn';
+import { getUserFeed } from '@/lib/action/user.action';
 
 const Feed = async({ user } : { user:User }) => {
-  
-  const feedItemsResponse = await axios.get('/feed', {
-    params: {
-      id: user.id
-    }
-  }).catch((err) => {
-    console.log("Error fetching Feed: " + err);
-    return { data: [] };
-  });
+  let feedItems:FeedItem[] = await getUserFeed(user.id);
 
-  const feedItems:FeedItem[] = feedItemsResponse?.data ?? [];
   return (
     <div className='w-screen min-h-full px-2 py-24 m-0'>
-
-        <AddFeedBtn userId={user.id} />
-
+        <AddFeedBtn user={user} />
+        
         {feedItems.map((item:FeedItem, i:number) => (
           <FeedItem 
             imgPath={item.image} 

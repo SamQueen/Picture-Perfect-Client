@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Cropper from "react-easy-crop";
 import { Point, Area } from 'react-easy-crop';
 
-const ImageCrop = ({ image, croppedAreaPixels, setCroppedAreaPixels }: ImageCropProps) => {
+const ImageCrop = ({ image, croppedAreaPixels, setCroppedAreaPixels, aspectRatio }: ImageCropProps) => {
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
 
@@ -18,7 +18,7 @@ const ImageCrop = ({ image, croppedAreaPixels, setCroppedAreaPixels }: ImageCrop
                 image={image}
                 crop={crop}
                 zoom={zoom}
-                aspect={1 / 1}
+                aspect={aspectRatio}
                 onCropChange={setCrop}
                 onCropComplete={onCropComplete}
                 onZoomChange={setZoom}

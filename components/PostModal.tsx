@@ -7,8 +7,12 @@ import FormData from 'form-data';
 import { Label } from '@radix-ui/react-label';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import ImageCrop from './ImageCrop';
+import { Area } from 'react-easy-crop';
+import { getCroppedImage } from '@/lib/cropImage';
+import { showErrorToast } from '@/lib/toast';
 
-const PostModal = ({ closeModal, userId }: PostModal) => {
+const PostModal = ({ closeModal, user }: PostModal) => {
     const router = useRouter();
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
     const [file, setFile] = useState<string | Blob>('');
@@ -16,6 +20,7 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
     const [showNext, setShowNext] = useState(false);
     const [caption, setCaption] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -28,14 +33,20 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
 
     const handleSubmit = async() => {
         setIsLoading(true);
+
+        if (!croppedAreaPixels){
+            setIsLoading(false);
+            return 
+        }
+        const croppedImage = await getCroppedImage(fileUrl, croppedAreaPixels);
         
         const formData:any = new FormData();
-        formData.append('image', file);
+        formData.append('image', croppedImage);
 
         await instance.post('createPost', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                user_id: userId,
+                user_id: user.id,
                 caption: caption,
             },
         }).then((res) => {
@@ -44,6 +55,7 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
             router.push('/');
         }).catch((err) => {
             setIsLoading(false);
+            showErrorToast('Could not create post. Please try again')
             console.log('Error creating post: ' + err)
         });
     }
@@ -116,7 +128,13 @@ const PostModal = ({ closeModal, userId }: PostModal) => {
                 ) : (
                     <div className='h-full'>
                         <div className='w-full h-[calc(50%-26px)] flex justify-center items-center bg-black bg-opacity-80'>
-                            <img className="h-full" src={fileUrl} />
+                            {/* <img className="h-full" src={fileUrl} /> */}
+                            <ImageCrop 
+                                image={fileUrl} 
+                                croppedAreaPixels={croppedAreaPixels} 
+                                setCroppedAreaPixels={setCroppedAreaPixels}
+                                aspectRatio={4 / 3}
+                            />
                         </div>
 
                         <div className='w-full h-[calc(50%-26px)] pt-5'>

@@ -26,7 +26,7 @@ const ChangeProfilePhotoBtn = ({ user, profilePhoto } : ChangeProfileBtnProps) =
     return (
     <div>
         {showModal && (
-            <ChangeProfilePhotoModal closeModal={closeModal} userId={user.id}/>
+            <ChangeProfilePhotoModal closeModal={closeModal} user={user}/>
         )}      
 
         <TooltipProvider>

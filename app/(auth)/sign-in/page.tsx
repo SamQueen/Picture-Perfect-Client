@@ -29,7 +29,6 @@ export default function SignIn() {
       console.log('Error during autmoatic atuhentication: '  + err);
     })
 
-
   }, [])
 
   const handleLogin = async() => {
@@ -73,10 +72,9 @@ export default function SignIn() {
   
   return (
     <main className="flex justify-center items-center w-screen h-screen px-5">
-      
       <div className=" bg-white px-5 py-10 h-fit w-96">
         <img className='h-40 mx-auto mb-10' src='./logo.png' alt=''></img>
-        
+
         <p className="text-center text-red-600 mb-5">{errorMsg}</p>
 
         <p>Email</p>
@@ -117,3 +115,7 @@ export default function SignIn() {
     </main>
   );
 }
+function toastError() {
+  throw new Error("Function not implemented.");
+}
+

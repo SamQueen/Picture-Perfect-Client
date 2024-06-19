@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-import { Area } from "react-easy-crop"
-
 declare type User = {
     created_at: string,
     email: string,
@@ -51,7 +49,7 @@ declare type PostType = {
 
 declare type PostModal = {
     closeModal: any,
-    userId: number,
+    user: User,
 }
 
 declare type CustomButton = {
@@ -64,7 +62,7 @@ declare type ImageGalleryProps = {
 }
 
 declare type AddFeedBtnProps = {
-    userId: number,
+    user: User,
 }
 
 declare type ChangeProfileBtnProps = {
@@ -76,4 +74,5 @@ declare type ImageCropProps = {
     image: string | undefined,
     croppedAreaPixels: Area | null,
     setCroppedAreaPixels: any,
+    aspectRatio: number,
 }
