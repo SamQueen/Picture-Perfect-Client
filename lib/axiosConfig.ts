@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const localUrl = 'http://localhost:5000';
+const devUrl = 'http://localhost:5000';
 const productionUrl = 'https://limitless-gorge-84901-46983064217d.herokuapp.com'
 
 const instance = axios.create({

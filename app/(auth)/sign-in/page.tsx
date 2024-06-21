@@ -16,7 +16,7 @@ export default function SignIn() {
   const router = useRouter();
 
   // check for authentication token
-  useEffect(() => {
+ /*  useEffect(() => {
     let user:User | undefined = undefined;
 
     (async() => {
@@ -29,12 +29,12 @@ export default function SignIn() {
       console.log('Error during autmoatic atuhentication: '  + err);
     })
 
-  }, [])
+  }, []) */
 
   const handleLogin = async() => {
     // disable if waiting for server response
     if (isLoading) return;
-    
+    console.log('logging in')
     if (isEmptyString(email) || isEmptyString(password)) {
       showErrorToast("Email or password missing");
       return;
@@ -49,7 +49,10 @@ export default function SignIn() {
       });
       
       if (res.status === 200) {
-        router.push('/');
+        //router.push('/');
+        console.log('Cookie should be recieved by browser');
+        console.log(res)
+        setIsLoading(false);
       } else {
         showErrorToast('Check username and password');
         setIsLoading(false);
@@ -110,7 +113,3 @@ export default function SignIn() {
     </main>
   );
 }
-function toastError() {
-  throw new Error("Function not implemented.");
-}
-

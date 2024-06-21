@@ -26,7 +26,7 @@ export const getRadianAngle = (degreeValue: number): number => {
 export const formatDate = (date: Date): String => {
   const dateObject = new Date(date);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+  console.log(date)
   const month = dateObject.getMonth();
   const day = dateObject.getDay();
   const year = dateObject.getFullYear();
