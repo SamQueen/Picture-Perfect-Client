@@ -7,11 +7,11 @@ import instance from "../../../lib/axiosConfig";
 import { getLoggedInUser } from "@/lib/action/user.action";
 import { Loader2 } from "lucide-react"
 import { isEmptyString } from "@/lib/utils";
+import { showErrorToast } from "@/lib/toast";
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -32,14 +32,11 @@ export default function SignIn() {
   }, [])
 
   const handleLogin = async() => {
-    // reset error message
-    setErrorMsg('');
-
     // disable if waiting for server response
     if (isLoading) return;
     
     if (isEmptyString(email) || isEmptyString(password)) {
-      setErrorMsg("Email or password missing");
+      showErrorToast("Email or password missing");
       return;
     }
 
@@ -54,16 +51,16 @@ export default function SignIn() {
       if (res.status === 200) {
         router.push('/');
       } else {
-        setErrorMsg('Check username and password');
+        showErrorToast('Check username and password');
         setIsLoading(false);
       }
     } catch (err:any) {
         console.log(err);
         
         if (err.response) {
-          setErrorMsg(err.response.data.message);
+          showErrorToast(err.response.data.message);
         } else {
-          setErrorMsg("We're having trouble connecting. Please try again later");
+          showErrorToast("We're having trouble connecting. Please try again later");
         }
         
         setIsLoading(false);
@@ -74,8 +71,6 @@ export default function SignIn() {
     <main className="flex justify-center items-center w-screen h-screen px-5">
       <div className=" bg-white px-5 py-10 h-fit w-96">
         <img className='h-40 mx-auto mb-10' src='./logo.png' alt=''></img>
-
-        <p className="text-center text-red-600 mb-5">{errorMsg}</p>
 
         <p>Email</p>
         <input 

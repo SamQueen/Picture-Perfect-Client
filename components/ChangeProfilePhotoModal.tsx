@@ -61,7 +61,7 @@ const ChangeProfilePhotoModal = ({ closeModal, user }: PostModal) => {
     }
 
     return (
-    <div className='absolute w-full h-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center'>
+    <div className='fixed w-full h-full top-0 left-0 bg-black bg-opacity-40 flex justify-center items-center'>
         <FaX 
             onClick={() => {closeModal(false)}}
             className='absolute top-5 right-5 text-xl text-white cursor-pointer' 

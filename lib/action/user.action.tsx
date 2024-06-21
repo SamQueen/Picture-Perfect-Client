@@ -16,10 +16,10 @@ export const getLoggedInUser = async():Promise<User | undefined> => {
     const cookieHeader = cookies().toString();
     
     try {
-        const response = await instance.post('loggedInUser', {}, {
-        headers: {
-            Cookie: cookieHeader,
-        },
+        const response = await instance.post('/loggedInUser', {}, {
+            headers: {
+                Cookie: cookieHeader,
+            },
         });
 
         const user = response.data;

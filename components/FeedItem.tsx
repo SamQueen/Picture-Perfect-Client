@@ -1,15 +1,20 @@
 'use client'
 
 import instance from '@/lib/axiosConfig';
+import { formatDate } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import { FaRegHeart, FaHeart, FaRegComment, FaShare } from "react-icons/fa6";
+import React, { useState } from 'react'
+import { FaRegHeart, FaHeart, FaRegComment, FaShare, FaEllipsisVertical } from "react-icons/fa6";
+import DeleteModal from './DeleteModal';
 
-const FeedItem = ({imgPath, description, likes, user, postId, isLiked, profilePic, username, userId}: PostType) => {
+const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, profilePic, username, postUserId}: PostType) => {
     const router = useRouter();
     const [liked, setLiked] = useState(isLiked);
     const [updatedLikes, setUpdatedLikes] = useState(likes);
     const [likeLoading, setLikeLoading] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    let ownPost = (user.id === postUserId) ? true : false;
 
     const handleLike = async() => {
         if (likeLoading)
@@ -46,11 +51,29 @@ const FeedItem = ({imgPath, description, likes, user, postId, isLiked, profilePi
     }
 
     const handleVisitProfile = () => {
-        router.push(`/profile?id=${userId}`);
+        router.push(`/profile?id=${postUserId}`);
     }
 
+    const openDeleteModal = () => {
+        setShowDeleteModal(true);
+        document.body.style.overflow = 'hidden';
+    }
+    
+    const closeDeleteModal = (reload:boolean) => {
+        setShowDeleteModal(false);
+        document.body.style.overflow = 'auto';
+
+        // reload current page
+        if (reload) {
+          location.reload();
+        }
+    }
     return (
     <div className='mx-auto bg-white sm:w-full md:w-3/5 lg:w-2/5 h-fit mb-10 rounded-md py-2 shadow'>
+        {showDeleteModal && (
+            <DeleteModal imgPath={imgPath} postId={postId} closeModal={closeDeleteModal}/>
+        )}
+        
         <div className='ml-5 mb-5 flex items-center'>
             <img onClick={handleVisitProfile} className='h-12 mr-2 rounded-3xl cursor-pointer' src={profilePic} alt=''></img>
             
@@ -60,8 +83,12 @@ const FeedItem = ({imgPath, description, likes, user, postId, isLiked, profilePi
                     <p onClick={handleVisitProfile} className='text-base cursor-pointer'>{username}</p>
                 </div>
 
-                <p className='text-xs'>May 5 2024 @4:15pm</p>
+                <p className='text-xs'>{formatDate(date)}</p>
             </div>
+
+            {ownPost && (
+                <FaEllipsisVertical onClick={openDeleteModal} className='ml-auto mr-5 cursor-pointer'/>
+            )}
         </div>
 
         <div className='w-full px-5 mb-2 text-sm md:text-base '>

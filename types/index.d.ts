@@ -21,7 +21,7 @@ declare type FeedItem = {
     user_id: number,
     post_id: number,
     caption: string,
-    date: string,
+    date: Date,
     image: string,
     like_count: number,
     is_liked: boolean,
@@ -37,6 +37,7 @@ declare type BottomNavType = {
 
 declare type PostType = {
     user:User,
+    postUserId: number,
     imgPath: string,
     description: string,
     likes: number,
@@ -44,7 +45,7 @@ declare type PostType = {
     isLiked: boolean,
     profilePic: string,
     username: string,
-    userId: number,
+    date: Date,
 }
 
 declare type PostModal = {
@@ -75,4 +76,10 @@ declare type ImageCropProps = {
     croppedAreaPixels: Area | null,
     setCroppedAreaPixels: any,
     aspectRatio: number,
+}
+
+declare type DeleteModalProps = {
+    closeModal: any,
+    postId: number,
+    imgPath: string,
 }

@@ -1,5 +1,4 @@
 "use client"
-import axios from '../lib/axiosConfig';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,6 +15,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "./ui/input"
+import instance from '../lib/axiosConfig';
+import { showErrorToast } from "@/lib/toast";
  
 const formSchema = z.object({
   email: z.string().email(),
@@ -70,19 +71,27 @@ export function SignUpForm() {
     // ✅ This will be type-safe and validated.
 
     try {
-      const response = await axios.post('createUser', {
+      const response = await instance.post('createUser', {
         username: values.username,
         email: values.email,
         firstName: values.firstName,
         lastName: values.lastName,
         password: values.password,
       });
-      console.log(response.data.status)
-      if (response.data.status === 'success') {
+      
+      if (response.status === 200) {
         router.push('/sign-in');
+      } else {
+        console.log("Error Creating User" + response);
+        showErrorToast("Problem creating user. Please try again later.");
       }
-    } catch (err) {
-      console.log("Error Creating User: " + err);
+    } catch (err: any) {
+      
+      if (err.response) {
+        showErrorToast(err.response.data.message);
+      } else {
+        showErrorToast("We're having trouble connecting. Please try again later");
+      }
     }
   }
  

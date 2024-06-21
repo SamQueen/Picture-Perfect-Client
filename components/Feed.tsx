@@ -5,7 +5,7 @@ import { getUserFeed } from '@/lib/action/user.action';
 
 const Feed = async({ user } : { user:User }) => {
   let feedItems:FeedItem[] = await getUserFeed(user.id);
-
+  
   return (
     <div className='w-screen min-h-full px-2 py-24 m-0'>
         <AddFeedBtn user={user} />
@@ -17,11 +17,12 @@ const Feed = async({ user } : { user:User }) => {
             likes = {item.like_count}
             key={i}
             user={user}
+            postUserId={item.user_id}
             postId={item.post_id}
             isLiked={item.is_liked}
             profilePic={item.profile_picture}
             username={item.username}
-            userId={user.id}
+            date={item.date}
           />
         ))}
     </div>
