@@ -46,12 +46,11 @@ export default function SignIn() {
       const res = await instance.post('/login', {
           email: email,
           password: password
-      }, {withCredentials: true} );
+      });
       
       if (res.status === 200) {
         //router.push('/');
         console.log('Cookie should be recieved by browser');
-        console.log(res)
         setIsLoading(false);
       } else {
         showErrorToast('Check username and password');
