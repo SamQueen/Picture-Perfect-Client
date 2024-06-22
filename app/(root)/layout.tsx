@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import SideNav from "@/components/SideNav";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import BottomNav from "@/components/BottomNav";
 import React from "react";
