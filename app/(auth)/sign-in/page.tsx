@@ -49,9 +49,7 @@ export default function SignIn() {
       });
       
       if (res.status === 200) {
-        //router.push('/');
-        console.log('Cookie should be recieved by browser');
-        setIsLoading(false);
+        router.push('/');
       } else {
         showErrorToast('Check username and password');
         setIsLoading(false);
