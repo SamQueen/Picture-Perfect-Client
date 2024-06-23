@@ -3,6 +3,7 @@ import { logout } from '@/lib/action/user.action';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FaHouse, FaInbox, FaBell, FaCompass, FaCircleInfo, FaGear, FaRightFromBracket } from "react-icons/fa6";
+import Cookies from 'js-cookie';
 
 const BottomNav = ({user}: BottomNavType) => {
     const router = useRouter();
@@ -17,6 +18,7 @@ const BottomNav = ({user}: BottomNavType) => {
     }
 
     const handleLogout = () => {
+        Cookies.remove('access_token');
         logout();
         router.push('/sign-in');
     }

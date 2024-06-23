@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FaHouse, FaInbox, FaBell, FaCompass, FaCircleInfo, FaGear, FaRightFromBracket } from "react-icons/fa6";
 import { logout } from '@/lib/action/user.action';
+import Cookies from 'js-cookie';
 
 const SideNav = ({ user }: SideNavTpye) => {
     const router = useRouter();
@@ -17,6 +18,8 @@ const SideNav = ({ user }: SideNavTpye) => {
     }
 
     const handleLogout = () => {
+        // remove auth cookie
+        Cookies.remove('access_token');
         logout();
         router.push('/sign-in');
     }
