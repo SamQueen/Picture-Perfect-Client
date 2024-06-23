@@ -22,7 +22,7 @@ export default async function Profile({ searchParams }: any) {
     usersPage = true;
 
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center px-5">
 
       {/* Sidenav filler. Helps center content. */}
       <div className='w-24 xl:w-80 hidden md:block'></div>

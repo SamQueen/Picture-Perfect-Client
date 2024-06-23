@@ -34,7 +34,7 @@ const ChangeProfilePhotoBtn = ({ user, profilePhoto } : ChangeProfileBtnProps) =
                 <TooltipTrigger>
                 <img 
                     onClick={openModal} 
-                    className='rounded-full h-24 md:h-32 lg:h-48 mr-5 cursor-pointer' 
+                    className='rounded-full h-16 md:h-32 lg:h-40 mr-5 cursor-pointer' 
                     src={profilePhoto} 
                     alt=''
                 />
