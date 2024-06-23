@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { FaRegHeart, FaHeart, FaRegComment, FaShare, FaEllipsisVertical } from "react-icons/fa6";
 import DeleteModal from './DeleteModal';
+import CommentModal from './CommentModal';
 
 const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, profilePic, username, postUserId}: PostType) => {
     const router = useRouter();
@@ -13,6 +14,7 @@ const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, pro
     const [updatedLikes, setUpdatedLikes] = useState(likes);
     const [likeLoading, setLikeLoading] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showCommentModal, setShowCommentModal] = useState(false);
 
     let ownPost = (user.id === postUserId) ? true : false;
 
@@ -68,10 +70,25 @@ const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, pro
           location.reload();
         }
     }
+
+    const openCommentModal = () => {
+        setShowCommentModal(true);
+        document.body.style.overflow = 'hidden';
+    }
+
+    const closeCommentModal = () => {
+        setShowCommentModal(false);
+        document.body.style.overflow = 'auto';
+    }
+
     return (
     <div className='mx-auto bg-white sm:w-full md:w-3/5 lg:w-2/5 h-fit mb-10 rounded-md py-2 shadow'>
         {showDeleteModal && (
             <DeleteModal imgPath={imgPath} postId={postId} closeModal={closeDeleteModal}/>
+        )}
+
+        {showCommentModal && (
+            <CommentModal user={user} postId={postId} imgPath={imgPath} closeModal={closeCommentModal} />
         )}
         
         <div className='ml-5 mb-5 flex items-center'>
@@ -116,7 +133,7 @@ const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, pro
                     <FaHeart onClick={handleLike} className=' mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer text-red-300'/> 
                 )}
 
-                <FaRegComment className='mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer hover:text-sky-500 duration-500'/>
+                <FaRegComment onClick={openCommentModal} className='mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer hover:text-sky-500 duration-500'/>
             </div>
 
             <FaShare className='mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer hover:text-sky-500 duration-500'/>

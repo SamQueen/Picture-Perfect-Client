@@ -83,3 +83,22 @@ declare type DeleteModalProps = {
     postId: number,
     imgPath: string,
 }
+
+declare type CommentModalProps = {
+    closeModal: any,
+    imgPath: string,
+    postId: number,
+    user: User,
+}
+
+declare type PostComment = {
+    id: number,
+    username: string,
+    content: string,
+    replies: PostComment[]
+    profilePic: string,
+}
+
+declare type CommentProps = {
+    comment: PostComment,
+}

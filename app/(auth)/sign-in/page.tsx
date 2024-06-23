@@ -16,20 +16,23 @@ export default function SignIn() {
   const router = useRouter();
 
   // check for authentication token
- /*  useEffect(() => {
+  useEffect(() => {
     let user:User | undefined = undefined;
+    
+    const checkLoggedIn = async() => {
+      try {
+        user = await getLoggedInUser();
+        console.log(user)
 
-    (async() => {
-      user = await getLoggedInUser();
-    })().then(() => {
-      if (user) {
-        router.push('/');
+        if (user)
+          router.push('/')
+      } catch (err) {
+        console.log("error getting logged in user: " + err);
       }
-    }).catch((err) => {
-      console.log('Error during autmoatic atuhentication: '  + err);
-    })
+    };
 
-  }, []) */
+    checkLoggedIn();
+  }, [])
 
   const handleLogin = async() => {
     // disable if waiting for server response
