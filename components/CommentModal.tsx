@@ -9,7 +9,7 @@ import { showErrorToast } from '@/lib/toast'
 const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) => {
     const [comments, setComments] = useState<PostComment[]>([]);
     const [content, setContent] = useState('');
-
+    const [parentId, setParentId] = useState(null);
 
     const getComments = async() => {
         try {
@@ -25,6 +25,11 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
         }
     }
 
+    const setReply = (parentId: any, username: string) => {
+        setParentId(parentId);
+        setContent(`@${username} `);
+    }
+
     useEffect(() => {
         getComments();
     }, [])
@@ -37,6 +42,7 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
                 postId: postId,
                 content: content,
                 userId: user.id,
+                parentId: parentId,
             });
 
             setContent('');
@@ -55,20 +61,26 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
             />
 
             <div className='bg-white h-3/4 rounded-lg w-[95%] xl:w-[75%] lg:flex relative overflow-hidden'>
-                <div className='w-full xl:w-[60%] h-1/2 lg:h-full flex justify-center items-center  bg-gray-800 overflow-hidden'>
+                <div className='w-full lg:w-[60%] xl:w-[70%] h-1/2 lg:h-full flex justify-center items-center  bg-gray-800 overflow-hidden'>
                     <img className='' src={imgPath}></img>
                 </div>
 
-                <div className='w-full xl:w-[40%] px-5 pt-5 pb-20 h-1/2 lg:h-full relative overflow-auto'>
+                <div className='w-full lg:w-[40%] md:1- xl:w-[30%] px-5 pt-5 pb-20 h-1/2 lg:h-full relative overflow-auto'>
                     {comments.map((comment: PostComment) => (
-                        <PostComment key={comment.id} comment={comment} />
+                        <PostComment setReply={setReply} key={comment.id} comment={comment} />
                     ))}   
 
                 </div>
 
-                <div className='flex w-full xl:w-[40%] bg-white items-center absolute bottom-0 right-0 p-2 border-t border-gray-300'>
-                    <img className='rounded-full h-10' src={user.profile_picture} alt='profile photo'></img>
-                    <Input onChange={(e) => { setContent(e.target.value) }} value={content} placeholder='Add a comment' />
+                <div className='flex w-full lg:w-[40%] xl:w-[30%] bg-white items-center absolute bottom-0 right-0 p-2 border-t border-gray-300'>
+                    <img className='rounded-full h-10 mr-2' src={user.profile_picture} alt='profile photo'></img>
+            
+                    <Input 
+                        onChange={(e) => { setContent(e.target.value) }} 
+                        value={content}
+                        placeholder='Add a comment'
+                    />
+                    
                     <p onClick={handleAddComment} className='text-blue-500 ml-2 hover:text-blue-700 cursor-pointer'>Post</p>
                 </div>
             </div>

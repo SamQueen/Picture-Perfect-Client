@@ -101,4 +101,5 @@ declare type PostComment = {
 
 declare type CommentProps = {
     comment: PostComment,
+    setReply: any,
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
-const Reply = ({ comment }: CommentProps) => {
+const Reply = ({ comment, setReply }: CommentProps) => {
   return (
     <div className='flex mb-2'>
         <img className="h-5 rounded-full mr-2" src={comment.profilePic} alt="user profile pic"></img>

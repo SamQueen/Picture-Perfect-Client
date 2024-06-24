@@ -4,7 +4,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import Reply from './Reply';
 
 
-const PostComment = ({ comment }: CommentProps) => {
+const PostComment = ({ comment, setReply }: CommentProps) => {
   const [showReplys, setShowReplys] = useState(false);
 
   const handleShowReplys = () => {
@@ -24,7 +24,11 @@ const PostComment = ({ comment }: CommentProps) => {
           <div className='flex'>
             <FaHeart className='text-red-300 mr-2' />
             <p className='text-xs mr-2'>22 likes</p>
-            <p className='text-xs cursor-pointer'>reply</p>
+            <p 
+              onClick={() => { setReply(comment.id, comment.username); setShowReplys(true); }} 
+              className='text-xs cursor-pointer'>
+                reply
+            </p>
           </div>
 
           {/* replies */}
@@ -34,7 +38,11 @@ const PostComment = ({ comment }: CommentProps) => {
           
               <div className={`px-10 border-l border-gray-400 transition overflow-hidden ${showReplys ? 'h-auto' : 'h-0'}`}>
                 {comment.replies.map((reply:PostComment) => (
-                  <Reply key={reply.id} comment={reply} />
+                  <Reply 
+                    key={reply.id} 
+                    setReply={setReply} 
+                    comment={reply}
+                  />
                 ))}
               </div>
             </div>
