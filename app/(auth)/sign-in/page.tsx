@@ -18,7 +18,7 @@ export default function SignIn() {
   // check for authentication token
   useEffect(() => {
     let user:User | undefined = undefined;
-    
+
     const checkLoggedIn = async() => {
       try {
         user = await getLoggedInUser();
@@ -37,17 +37,19 @@ export default function SignIn() {
   const handleLogin = async() => {
     // disable if waiting for server response
     if (isLoading) return;
-    console.log('logging in')
+
     if (isEmptyString(email) || isEmptyString(password)) {
       showErrorToast("Email or password missing");
       return;
     }
 
+    const lowerCaseEmail = email.toLowerCase();
+
     setIsLoading(true);
     
     try {
       const res = await instance.post('/login', {
-          email: email,
+          email: lowerCaseEmail,
           password: password
       });
       
@@ -69,7 +71,13 @@ export default function SignIn() {
         setIsLoading(false);
     }
   }
-  
+
+  const handleUseDemo = () => {
+    setEmail('sjqueen@asu.edu');
+    setPassword('samsamsam');
+    handleLogin();
+  }
+
   return (
     <main className="flex justify-center items-center w-screen h-screen px-5">
       <div className=" bg-white px-5 py-10 h-fit w-96">
@@ -103,8 +111,10 @@ export default function SignIn() {
         <div className="h-custom w-full my-5 bg-gray-300 "></div>
 
         <div className="w-full text-center">
-          <p>No Account? 
-            <Link href='./sign-up' className="text-blue-500"> Sign up</Link>
+          <p>
+            <Link href='./sign-up' className="text-blue-500">Create </Link>
+            Account or use
+            <span onClick={handleUseDemo} className="text-blue-500 cursor-pointer"> Demo </span>
           </p>
         </div>
       </div>

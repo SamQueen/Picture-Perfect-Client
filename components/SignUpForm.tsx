@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "./ui/input"
 import instance from '../lib/axiosConfig';
-import { showErrorToast } from "@/lib/toast";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
  
 const formSchema = z.object({
   email: z.string().email(),
@@ -73,13 +73,14 @@ export function SignUpForm() {
     try {
       const response = await instance.post('createUser', {
         username: values.username,
-        email: values.email,
+        email: values.email.toLowerCase(),
         firstName: values.firstName,
         lastName: values.lastName,
         password: values.password,
       });
       
       if (response.status === 200) {
+        showSuccessToast('Account Created!');
         router.push('/sign-in');
       } else {
         console.log("Error Creating User" + response);
