@@ -1,15 +1,19 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FaX } from 'react-icons/fa6'
 import PostComment from './PostComment'
 import { Input } from './ui/input'
 import instance from '@/lib/axiosConfig'
 import { showErrorToast } from '@/lib/toast'
+import { Loader2 } from 'lucide-react'
 
 const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) => {
     const [comments, setComments] = useState<PostComment[]>([]);
     const [content, setContent] = useState('');
     const [parentId, setParentId] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const submitCommentBtn = useRef(null);
 
     const getComments = async() => {
         try {
@@ -18,25 +22,33 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
                     post_id: postId
                 }
             });
-            console.log(response);
+
             setComments(response.data.comments)
         } catch (err) {
             console.log('Error getting comments and replies: ' + err);
         }
     }
 
+    useEffect(() => {
+        getComments();
+    }, [])
+
     const setReply = (parentId: any, username: string) => {
         setParentId(parentId);
         setContent(`@${username} `);
     }
-
-    useEffect(() => {
-        getComments();
-    }, [])
   
     const handleAddComment = async () => {
         if (content === '') return
         
+        // check if there is an add comment request pedning
+        if (isLoading) {
+            return;
+        }
+
+        // update the loading status
+        setIsLoading(true);
+
         try {
             const response = await instance.post('/addComment', {
                 postId: postId,
@@ -46,11 +58,25 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
             });
 
             setContent('');
+            setParentId(null);
             getComments();
+            setIsLoading(false);
         } catch (err) {
             console.log('Error adding comment: ' + err);
             showErrorToast("Problem adding comment. Please try again later.");
+            setIsLoading(false);
         }
+    }
+    
+    const handleOnBlur = (e: any) => {
+        // Check if use clicked on sumbit commnet button
+        if (e.relatedTarget === submitCommentBtn.current) {
+            return; // return nothing
+        }
+ 
+        // reset comment content and parent id
+        setContent('');
+        setParentId(null);
     }
 
     return (
@@ -77,11 +103,23 @@ const CommentModal = ({ closeModal, imgPath, postId, user }: CommentModalProps) 
             
                     <Input 
                         onChange={(e) => { setContent(e.target.value) }} 
-                        value={content}
+                        value={ content }
                         placeholder='Add a comment'
+                        onBlur={(e) => { handleOnBlur(e) }}
                     />
                     
-                    <p onClick={handleAddComment} className='text-blue-500 ml-2 hover:text-blue-700 cursor-pointer'>Post</p>
+                    {isLoading ? (
+                        <Loader2 className='animate-spin'/>
+                    ) : (
+                        <button  
+                            ref={submitCommentBtn} 
+                            onClick={ handleAddComment }
+                            className='text-blue-500 ml-2 hover:text-blue-700 cursor-pointer'
+                        >
+                            Post
+                        </button>
+                    )}
+
                 </div>
             </div>
         </div>
