@@ -13,6 +13,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [demoState, setDemoState] = useState(false);
   const router = useRouter();
 
   // check for authentication token
@@ -22,7 +23,6 @@ export default function SignIn() {
     const checkLoggedIn = async() => {
       try {
         user = await getLoggedInUser();
-        console.log(user)
 
         if (user)
           router.push('/')
@@ -72,10 +72,17 @@ export default function SignIn() {
     }
   }
 
-  const handleUseDemo = () => {
+  useEffect(() => {
+    if (demoState) {
+      setDemoState(false);
+      handleLogin();
+    }
+  }, [demoState]);
+
+  const handleUseDemo = async() => {
     setEmail('sjqueen@asu.edu');
     setPassword('samsamsam');
-    handleLogin();
+    setDemoState(true);
   }
 
   return (
