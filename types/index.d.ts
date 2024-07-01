@@ -103,3 +103,37 @@ declare type CommentProps = {
     comment: PostComment,
     setReply: any,
 }
+
+declare type MessagePanelProps = {
+    openMessages: any,
+    userId: number,
+    openModal: any,
+    receivedMessage: Message | undefined,
+}
+
+declare type MessageDisplayProps = {
+    userId: number,
+    otherUserId: number,
+    sendMessage: any,
+    setMessages: any,
+    messages: Message[],
+    showMessages: boolean,
+    setShowMessages: any,
+}
+
+declare type Message = {
+    content: string,
+    id: number,
+    userId: number,
+    username: string,
+    profilePhoto: string,
+    sender_id: number,
+    status: string,
+    timestamp: string
+}
+
+declare type MessageModalProps = {
+    closeModal: any,
+    openMessages: any,
+}
+

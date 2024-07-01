@@ -128,7 +128,7 @@ const FeedItem = ({date, imgPath, description, likes, user, postId, isLiked, pro
         <div className='my-2 flex ml-5 justify-between'>
             <div className='flex'>
                 {!liked ? (
-                    <FaRegHeart onClick={handleLike} className='mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer hover:text-red-300 duration-500'/>
+                    <FaRegHeart onClick={handleLike} className={`${likeLoading ? 'animate-pulse': ''} mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer hover:text-red-300 duration-500`}/>
                 ) : (
                     <FaHeart onClick={handleLike} className=' mr-5 text-lg sm:text-xl lg:text-3xl cursor-pointer text-red-300'/> 
                 )}

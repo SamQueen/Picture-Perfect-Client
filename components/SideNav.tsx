@@ -24,6 +24,10 @@ const SideNav = ({ user }: SideNavTpye) => {
         router.push('/sign-in');
     }
 
+    const handleMessages = () => {
+        router.push(`/messages?id=${user.id}`);
+    }
+
   return (
     <div className="py-16 h-screen fixed border border-black-400 bg-white xl:px-5 w-24 xl:w-80 hidden md:block">
         
@@ -37,9 +41,12 @@ const SideNav = ({ user }: SideNavTpye) => {
                 <p className="hidden xl:block">HOME</p>
             </li>
 
-            <li className='flex w-full px-5 py-2 rounded-md hover:bg-gray-200 duration-500 cursor-pointer justify-center xl:justify-normal'>
+            <li onClick={handleMessages} className='flex relative w-full px-5 py-2 rounded-md hover:bg-gray-200 duration-500 cursor-pointer justify-center xl:justify-normal'>
                 <FaInbox className='text-2xl xl:text-2xl xl:mr-5'/>
                 <p className="hidden xl:block">MESSAGES</p>
+
+                {/* notification dot */}
+                <div className='h-2 w-2 rounded-full bg-amber-500 absolute bottom-2 left-14 xl:left-10'></div>
             </li>
 
             <li className='flex w-full px-5 py-2 rounded-md hover:bg-gray-200 duration-500 cursor-pointer justify-center xl:justify-normal'>

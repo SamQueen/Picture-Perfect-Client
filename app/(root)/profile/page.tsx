@@ -14,7 +14,6 @@ export default async function Profile({ searchParams }: any) {
   // check for authentication
   if (!loggedInUser) {
     redirect('/sign-in');
-    return 
   }
 
   // check if on logged in users profile page

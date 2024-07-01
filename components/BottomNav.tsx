@@ -17,6 +17,10 @@ const BottomNav = ({user}: BottomNavType) => {
         router.refresh();
     }
 
+    const handleMessages =  () => {
+        router.push(`/messages?id=${user.id}`);
+    }
+
     const handleLogout = () => {
         Cookies.remove('access_token');
         logout();
@@ -30,8 +34,11 @@ const BottomNav = ({user}: BottomNavType) => {
                 <FaHouse className='text-xl' />
             </div>
 
-            <div className='flex items-center'>
+            <div onClick={handleMessages} className='flex items-center relative'>
                 <FaInbox className='text-xl' />
+
+                {/* notification dot */}
+                <div className='h-2 w-2 rounded-full bg-amber-500 absolute bottom-2 left-3'></div>
             </div>
 
             <div className='flex items-center'>
