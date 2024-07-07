@@ -13,6 +13,8 @@ export default function Messages({ searchParams }: any) {
     const [otherUserId, setOtherUserId] = useState(1);
     const [showModal, setShowModal] = useState(false);
     const [receivedMessage, setReceivecedMessage] = useState<Message | undefined>(undefined);
+    const [otherUsername, setOtherUsername] = useState('');
+    const [otherUserPhoto, setOtherUserPhoto] = useState(''); 
 
     // recieve message event
     useEffect(() => {
@@ -42,9 +44,11 @@ export default function Messages({ searchParams }: any) {
         return Promise.resolve();
     }
 
-    const openMessages = (id: number) => {
+    const openMessages = (id: number, username: string, photo: string) => {
         setShowMessages(true);
-        setOtherUserId(id)
+        setOtherUserId(id);
+        setOtherUsername(username);
+        setOtherUserPhoto(photo);
     }
 
     const openModal = () => {
@@ -64,7 +68,16 @@ export default function Messages({ searchParams }: any) {
         <MessagePanel openModal={openModal} userId={userId} openMessages={openMessages} receivedMessage={receivedMessage} />
 
         {showMessages ? (
-            <MessageDisplay setShowMessages={setShowMessages} showMessages={showMessages} messages={messages} setMessages={setMessages} sendMessage={sendMessage} userId={userId} otherUserId={otherUserId} />
+            <MessageDisplay 
+                setShowMessages={setShowMessages} 
+                messages={messages} 
+                setMessages={setMessages} 
+                sendMessage={sendMessage} 
+                userId={userId} 
+                otherUserId={otherUserId}
+                otherUsername={otherUsername}
+                otherUserPhoto={otherUserPhoto}
+            />
         ) : ( 
             <CreateMessage openModal={openModal}/>
         )}

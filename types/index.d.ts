@@ -117,8 +117,9 @@ declare type MessageDisplayProps = {
     sendMessage: any,
     setMessages: any,
     messages: Message[],
-    showMessages: boolean,
     setShowMessages: any,
+    otherUsername: string,
+    otherUserPhoto: string,
 }
 
 declare type Message = {

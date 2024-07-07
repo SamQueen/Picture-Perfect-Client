@@ -25,7 +25,6 @@ const MessageModal = ({ closeModal, openMessages }: MessageModalProps) => {
                     input: searchInput,
                 }
             })
-            console.log(response.data.users)
             setUsers(response.data.users);
         } catch(err) {
             console.log('Error seaching for user' + err);
@@ -37,8 +36,8 @@ const MessageModal = ({ closeModal, openMessages }: MessageModalProps) => {
         searchUsers();
     }, [searchInput])
 
-    const handleMessageUser = (otherUserId: number) => {
-        openMessages(otherUserId);
+    const handleMessageUser = (otherUser: MessageModalUser) => {
+        openMessages(otherUser.id, otherUser.username, otherUser.profilePhoto);
         closeModal();
     }
 
@@ -59,7 +58,7 @@ const MessageModal = ({ closeModal, openMessages }: MessageModalProps) => {
                         <div key={i} className='flex items-center py-1 cursor-pointer hover:bg-gray-200 duration-500'>
                             <img className="h-10 w-10 rounded-full mr-5" src={user.profilePhoto} alt="profile photo"></img>
                             {user.username}
-                            <Button onClick={() => {handleMessageUser(user.id)}} className='ml-auto'>Message</Button>
+                            <Button onClick={() => {handleMessageUser(user)}} className='ml-auto'>Message</Button>
                         </div>
                     ))}
                 </ScrollArea>
