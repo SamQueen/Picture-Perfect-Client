@@ -2,10 +2,6 @@
 import { cookies } from "next/headers";
 import instance from "../axiosConfig";
 
-export const logout = () => {
-    cookies().delete('access_token');
-}
-
 /**
  * Fetches the logged-in user based on the cookies provided in the request headers.
  * If the user is not logged in or an error occurs, returns undefined.

@@ -1,9 +1,9 @@
 'use client'
-import { logout } from '@/lib/action/user.action';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FaHouse, FaInbox, FaBell, FaCompass, FaCircleInfo, FaGear, FaRightFromBracket } from "react-icons/fa6";
-import Cookies from 'js-cookie';
+import instance from '@/lib/axiosConfig';
+import { showErrorToast } from '@/lib/toast';
 
 const BottomNav = ({user}: BottomNavType) => {
     const router = useRouter();
@@ -21,10 +21,12 @@ const BottomNav = ({user}: BottomNavType) => {
         router.push(`/messages?id=${user.id}`);
     }
 
-    const handleLogout = () => {
-        Cookies.remove('access_token');
-        logout();
-        router.push('/sign-in');
+    const handleLogout = async() => {
+        try {
+            const response = await instance.post('logout');
+        } catch (err) {
+            showErrorToast('Problem logging out. Please try again later');
+        }
     }
   
     return (

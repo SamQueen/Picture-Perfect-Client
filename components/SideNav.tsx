@@ -2,8 +2,9 @@
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FaHouse, FaInbox, FaBell, FaCompass, FaCircleInfo, FaGear, FaRightFromBracket } from "react-icons/fa6";
-import { logout } from '@/lib/action/user.action';
 import Cookies from 'js-cookie';
+import { showErrorToast } from '@/lib/toast';
+import instance from '@/lib/axiosConfig';
 
 const SideNav = ({ user }: SideNavTpye) => {
     const router = useRouter();
@@ -18,10 +19,13 @@ const SideNav = ({ user }: SideNavTpye) => {
     }
 
     const handleLogout = () => {
-        // remove auth cookie
-        Cookies.remove('access_token');
-        logout();
-        router.push('/sign-in');
+        const handleLogout = async() => {
+            try {
+                const response = await instance.post('logout');
+            } catch (err) {
+                showErrorToast('Problem logging out. Please try again later');
+            }
+        }
     }
 
     const handleMessages = () => {
