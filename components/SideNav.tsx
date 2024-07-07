@@ -18,13 +18,13 @@ const SideNav = ({ user }: SideNavTpye) => {
         router.refresh();
     }
 
-    const handleLogout = () => {
-        const handleLogout = async() => {
-            try {
-                const response = await instance.post('logout');
-            } catch (err) {
-                showErrorToast('Problem logging out. Please try again later');
-            }
+    const handleLogout = async() => {
+        try {
+            const response = await instance.post('logout');
+
+            router.push('sign-in');
+        } catch (err) {
+            showErrorToast('Problem logging out. Please try again later');
         }
     }
 
