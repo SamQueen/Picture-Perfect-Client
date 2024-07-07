@@ -24,6 +24,7 @@ const SideNav = ({ user }: SideNavTpye) => {
 
             router.push('sign-in');
         } catch (err) {
+            console.error('Error logging out: ', err);
             showErrorToast('Problem logging out. Please try again later');
         }
     }

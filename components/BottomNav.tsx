@@ -27,6 +27,7 @@ const BottomNav = ({user}: BottomNavType) => {
 
             router.push('sign-in');
         } catch (err) {
+            console.error('Error logging out: ', err);
             showErrorToast('Problem logging out. Please try again later');
         }
     }
