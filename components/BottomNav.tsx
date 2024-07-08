@@ -23,7 +23,7 @@ const BottomNav = ({user}: BottomNavType) => {
 
     const handleLogout = async() => {
         try {
-            const response = await instance.post('logout');
+            const response = await instance.post('/logout');
 
             router.push('sign-in');
         } catch (err) {
