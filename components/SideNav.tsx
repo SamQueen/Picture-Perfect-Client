@@ -5,6 +5,7 @@ import { FaHouse, FaInbox, FaBell, FaCompass, FaCircleInfo, FaGear, FaRightFromB
 import Cookies from 'js-cookie';
 import { showErrorToast } from '@/lib/toast';
 import instance from '@/lib/axiosConfig';
+import { cookies } from 'next/headers';
 
 const SideNav = ({ user }: SideNavTpye) => {
     const router = useRouter();
@@ -20,8 +21,8 @@ const SideNav = ({ user }: SideNavTpye) => {
 
     const handleLogout = async() => {
         try {
-            const response = await instance.post('/logout');
-
+            //const response = await instance.post('/logout');
+            Cookies.remove('access_token', { path: '/', domain: '.pictureper.com' });
             router.push('sign-in');
         } catch (err) {
             console.error('Error logging out: ', err);
